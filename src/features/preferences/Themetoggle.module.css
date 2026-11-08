@@ -1,0 +1,16 @@
+.themeToggle {
+  align-items: center;
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-full);
+  color: var(--text);
+  cursor: pointer;
+  display: inline-flex;
+  height: var(--tap-target);
+  justify-content: center;
+  width: var(--tap-target);
+}
+
+.themeToggle:hover {
+  background: var(--surface-muted);
+}

@@ -1,1 +1,23 @@
-@import '../brief/design-tokens.css';
+.main {
+  margin: 0 auto;
+  max-width: calc(var(--container) + 2 * var(--gutter));
+  /* Leave room for the fixed mobile CTA + safe area. */
+  padding: var(--space-6) var(--gutter-mobile)
+    calc(var(--tap-target) + var(--space-12) + env(safe-area-inset-bottom));
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+}
+
+.segmentMobile {
+  align-self: flex-start;
+  margin-top: var(--space-3);
+}
+
+@media (min-width: 640px) {
+  .segmentMobile {
+    display: none;
+  }
+}
