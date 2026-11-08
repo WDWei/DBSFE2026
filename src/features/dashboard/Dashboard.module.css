@@ -1,12 +1,41 @@
 .main {
-  margin: 0 auto;
-  max-width: calc(var(--container) + 2 * var(--gutter));
-  /* Leave room for the fixed mobile CTA + safe area. */
-  padding: var(--space-6) var(--gutter-mobile)
-    calc(var(--tap-target) + var(--space-12) + env(safe-area-inset-bottom));
-}
-
-.intro {
   display: flex;
   flex-direction: column;
+  gap: var(--space-4);
+  margin-inline: auto;
+  max-width: var(--container);
+  /* Leaves room for the New transfer bar fixed to the bottom on mobile. */
+  padding: var(--space-4) var(--gutter-mobile)
+    calc(var(--tap-target) + var(--space-8) + env(safe-area-inset-bottom));
+}
+
+.grid {
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  min-width: 0;
+}
+
+.greeting {
+  font-size: var(--text-2xl);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+}
+
+@media (min-width: 640px) {
+  .main {
+    padding: var(--space-6) var(--gutter) var(--space-8);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr) 300px;
+  }
 }

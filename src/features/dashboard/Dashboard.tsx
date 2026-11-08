@@ -10,6 +10,8 @@ import { useSegment } from "../preferences/userPreferences";
 import { ErrorPanel } from "../../components/ErrorPanel";
 import { Skeleton } from "../../components/Skeleton";
 import { formatLongDate } from "../../lib/format";
+import { useRef } from "react";
+import { AccountsSection } from "./AccountsSection";
 
 export function Dashboard() {
   const customerResult = useQuery(customerQuery);
@@ -20,7 +22,7 @@ export function Dashboard() {
   const customer = customerResult.data;
   const accounts = accountsResult.data;
   const transactions = transactionsResult.data;
-
+  const newTransferRef = useRef<HTMLButtonElement>(null);
   const isLoading = results.some(
     (result) => result.isPending && !result.isError,
   );
@@ -80,9 +82,9 @@ export function Dashboard() {
                 canTransfer={canTransfer}
                 newTransferRef={newTransferRef}
                 onNewTransfer={() => onNewTransfer?.()}
-              />
+              /> */}
               <AccountsSection accounts={accounts} />
-              <TransactionList transactions={transactions} /> */}
+              {/* <TransactionList transactions={transactions} /> */}
             </div>
             {/* <aside className={styles.rail} aria-label="Transfer limits">
               <DailyLimitCard customer={customer} />

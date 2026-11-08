@@ -1,0 +1,9 @@
+.empty {
+  align-items: center;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-8) var(--space-4);
+  text-align: center;
+}
