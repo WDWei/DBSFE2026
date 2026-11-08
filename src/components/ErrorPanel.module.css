@@ -1,0 +1,18 @@
+.panel {
+  align-items: center;
+  background: var(--negative-soft);
+  border: 1px solid var(--negative);
+  border-radius: var(--radius-md);
+  color: var(--text);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: space-between;
+  padding: var(--space-4);
+}
+
+.panel p {
+  color: var(--negative);
+  font-weight: var(--weight-semibold);
+  margin: 0;
+}

@@ -1,0 +1,69 @@
+.button {
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  font-weight: var(--weight-semibold);
+  gap: var(--space-2);
+  justify-content: center;
+  min-height: var(--tap-target);
+  min-width: var(--tap-target);
+  padding: var(--space-2) var(--space-4);
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+
+.primary {
+  background: var(--brand);
+  color: var(--on-brand);
+}
+
+.primary:hover {
+  background: var(--brand-hover);
+}
+
+.primary:active {
+  background: var(--brand-active);
+}
+
+.secondary {
+  background: var(--surface);
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.secondary:hover {
+  background: var(--surface-muted);
+}
+
+.ghost {
+  background: transparent;
+  color: var(--brand);
+}
+
+.ghost:hover {
+  background: var(--brand-soft);
+}
+
+/* Fixed to the page on mobile, so it uses the normal brand colours there. */
+.hero {
+  background: var(--brand);
+  color: var(--on-brand);
+}
+
+@media (min-width: 640px) {
+  /* Brand on the brand gradient would disappear, so invert it on the hero. */
+  .hero {
+    background: var(--on-hero);
+    color: var(--hero-from);
+  }
+}
+
+.button:disabled {
+  background: var(--surface-muted);
+  border-color: var(--border);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
