@@ -10,10 +10,11 @@ import { useSegment } from "../preferences/userPreferences";
 import { ErrorPanel } from "../../components/ErrorPanel";
 import { Skeleton } from "../../components/Skeleton";
 import { formatLongDate } from "../../lib/format";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { AccountsSection } from "./AccountsSection";
 import { DailyLimitCard } from "./DailyLimitCard";
 import { TransactionList } from "./TransactionList";
+import { BalanceHero } from "./BalanceHero";
 
 export function Dashboard() {
   const customerResult = useQuery(customerQuery);
@@ -33,6 +34,8 @@ export function Dashboard() {
   const hasData = results.every((result) => result.data !== undefined);
   const canTransfer = accounts !== undefined && !isError;
   const isLoaded = Boolean(customer && accounts && transactions);
+
+  const [isTransferOpen, setIsTransferOpen] = useState(false);
   const { segment, setSegment } = useSegment(customer?.segment);
 
   const retry = () => {
@@ -79,12 +82,12 @@ export function Dashboard() {
                   {formatLongDate(new Date().toISOString())}
                 </p>
               </div>
-              {/* <BalanceHero
+              <BalanceHero
                 accounts={accounts}
                 canTransfer={canTransfer}
                 newTransferRef={newTransferRef}
-                onNewTransfer={() => onNewTransfer?.()}
-              /> */}
+                onNewTransfer={() => setIsTransferOpen(true)}
+              />
               <AccountsSection accounts={accounts} />
               <TransactionList transactions={transactions} />
             </div>

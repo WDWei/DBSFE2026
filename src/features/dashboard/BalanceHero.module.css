@@ -1,0 +1,60 @@
+.hero {
+  align-items: center;
+  background: linear-gradient(135deg, var(--hero-from), var(--hero-to));
+  border-radius: var(--radius-lg);
+  color: var(--on-hero);
+  display: flex;
+  gap: var(--space-4);
+  justify-content: space-between;
+  padding: var(--space-6);
+}
+
+.label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.total {
+  font-size: var(--text-display);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  margin-block: var(--space-1);
+  overflow-wrap: anywhere;
+}
+
+.caption {
+  font-size: var(--text-sm);
+}
+
+/* Mobile: a bar fixed to the bottom of the screen, above the safe area. */
+.cta {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  bottom: 0;
+  inset-inline: 0;
+  padding: var(--space-3) var(--gutter-mobile)
+    calc(var(--space-3) + env(safe-area-inset-bottom));
+  position: fixed;
+  z-index: var(--z-header);
+}
+
+.ctaButton {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .cta {
+    background: transparent;
+    border: 0;
+    flex-shrink: 0;
+    padding: 0;
+    position: static;
+  }
+
+  .ctaButton {
+    width: auto;
+  }
+}
