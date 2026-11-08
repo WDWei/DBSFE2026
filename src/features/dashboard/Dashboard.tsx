@@ -13,6 +13,7 @@ import { formatLongDate } from "../../lib/format";
 import { useRef } from "react";
 import { AccountsSection } from "./AccountsSection";
 import { DailyLimitCard } from "./DailyLimitCard";
+import { TransactionList } from "./TransactionList";
 
 export function Dashboard() {
   const customerResult = useQuery(customerQuery);
@@ -85,7 +86,7 @@ export function Dashboard() {
                 onNewTransfer={() => onNewTransfer?.()}
               /> */}
               <AccountsSection accounts={accounts} />
-              {/* <TransactionList transactions={transactions} /> */}
+              <TransactionList transactions={transactions} />
             </div>
             <aside className={styles.rail} aria-label="Transfer limits">
               <DailyLimitCard customer={customer} />

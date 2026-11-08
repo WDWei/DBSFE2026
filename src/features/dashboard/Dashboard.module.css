@@ -22,9 +22,6 @@
   min-width: 0;
 }
 /* Added myself */
-.rail {
-  align-self: flex-end;
-}
 
 .greeting {
   font-size: var(--text-2xl);
@@ -41,5 +38,12 @@
 @media (min-width: 1024px) {
   .grid {
     grid-template-columns: minmax(0, 1fr) 300px;
+  }
+
+  .rail {
+    align-items: center;
+    display: flex;
+    height: calc(100vh - var(--header-height));
+    top: var(--header-height);
   }
 }
