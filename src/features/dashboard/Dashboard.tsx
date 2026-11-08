@@ -7,7 +7,6 @@ import {
 } from "../../api/queries";
 import { Header } from "./Header";
 import { useSegment } from "../preferences/userPreferences";
-import { SegmentSwitch } from "../preferences/SegmentSwitch";
 import { ErrorPanel } from "../../components/ErrorPanel";
 import { Skeleton } from "../../components/Skeleton";
 import { formatLongDate } from "../../lib/format";
@@ -29,7 +28,7 @@ export function Dashboard() {
   const isRetrying = isError && results.some((result) => result.isFetching);
   const hasData = results.every((result) => result.data !== undefined);
   const canTransfer = accounts !== undefined && !isError;
-
+  const isLoaded = Boolean(customer && accounts && transactions);
   const { segment, setSegment } = useSegment(customer?.segment);
 
   const retry = () => {
@@ -61,7 +60,7 @@ export function Dashboard() {
           />
         )}
         {/*The hasData and isError can be simplified*/}
-        {(hasData || !isError) && (
+        {(isLoaded || !isError) && (
           <div className={styles.grid}>
             <div className={styles.column}>
               <div className={styles.intro}>
@@ -75,11 +74,6 @@ export function Dashboard() {
                 <p className={styles.dateLine}>
                   {formatLongDate(new Date().toISOString())}
                 </p>
-                <SegmentSwitch
-                  segment={segment}
-                  onChange={setSegment}
-                  className={styles.segmentMobile}
-                />
               </div>
               {/* <BalanceHero
                 accounts={accounts}

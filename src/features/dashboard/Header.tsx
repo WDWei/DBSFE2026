@@ -1,22 +1,21 @@
+import type { Customer, Segment } from "../../api/types";
+import { Skeleton } from "../../components/Skeleton";
+import { SegmentSwitch } from "../preferences/SegmentSwitch";
+import { ThemeToggle } from "../preferences/ThemeToggle";
+import styles from "./Header.module.css";
 
-import type { Customer, Segment } from '../../api/types'
-import { Skeleton } from '../../components/Skeleton'
-import { SegmentSwitch } from '../preferences/SegmentSwitch'
-import { ThemeToggle } from '../preferences/ThemeToggle'
-import styles from './Header.module.css'
-
-const DISABLED_NAV_ITEMS = ['Cards', 'Payments', 'Insights']
+const DISABLED_NAV_ITEMS = ["Cards", "Payments", "Insights"];
 
 interface HeaderProps {
-  customer?: Customer
-  segment: Segment
-  onSegmentChange: (segment: Segment) => void
+  customer?: Customer;
+  segment: Segment;
+  onSegmentChange: (segment: Segment) => void;
 }
 
-export function Header({ customer,segment , onSegmentChange }: HeaderProps) {
+export function Header({ customer, segment, onSegmentChange }: HeaderProps) {
   const initials = customer
     ? `${customer.firstName.charAt(0)}${customer.lastName.charAt(0)}`
-    : ''
+    : "";
 
   return (
     <header className={styles.header}>
@@ -44,18 +43,19 @@ export function Header({ customer,segment , onSegmentChange }: HeaderProps) {
           ))}
         </nav>
 
+        <div className={styles.segment}>
+          <SegmentSwitch segment={segment} onChange={onSegmentChange} />
+        </div>
+
         <div className={styles.headerActions}>
-          <SegmentSwitch
-            segment={segment}
-            onChange={onSegmentChange}
-            className={styles.segmentDesktop}
-          />
-          <ThemeToggle/>
+          <ThemeToggle />
           <span
             className={styles.avatar}
             role="img"
             aria-label={
-              customer ? `${customer.firstName} ${customer.lastName}` : 'Profile'
+              customer
+                ? `${customer.firstName} ${customer.lastName}`
+                : "Profile"
             }
           >
             {initials || <Skeleton width="1.5em" />}
@@ -63,5 +63,5 @@ export function Header({ customer,segment , onSegmentChange }: HeaderProps) {
         </div>
       </div>
     </header>
-  )
+  );
 }

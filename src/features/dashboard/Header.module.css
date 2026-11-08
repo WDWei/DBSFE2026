@@ -1,4 +1,3 @@
-
 .header {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
@@ -9,12 +8,14 @@
 
 .headerInner {
   align-items: center;
+  column-gap: var(--space-6);
   display: flex;
-  gap: var(--space-6);
-  height: var(--header-height);
+  flex-wrap: wrap;
   margin: 0 auto;
   max-width: calc(var(--container) + 2 * var(--gutter));
-  padding: 0 var(--gutter-mobile);
+  min-height: var(--header-height);
+  padding: var(--space-2) var(--gutter-mobile);
+  row-gap: var(--space-2);
 }
 
 .brand {
@@ -61,13 +62,13 @@
   text-decoration: none;
 }
 
-.navLink[aria-current='page'] {
+.navLink[aria-current="page"] {
   background: var(--brand-soft);
   color: var(--brand);
   font-weight: var(--weight-semibold);
 }
 
-.navLink[aria-disabled='true'] {
+.navLink[aria-disabled="true"] {
   cursor: not-allowed;
 }
 
@@ -76,38 +77,6 @@
   display: flex;
   gap: var(--space-3);
   margin-left: auto;
-}
-
-.segmentDesktop {
-  display: none;
-}
-
-.segmentSwitch {
-  background: var(--surface-muted);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-full);
-  display: inline-flex;
-  padding: var(--space-1);
-}
-
-.segmentOption {
-  background: transparent;
-  border: 0;
-  border-radius: var(--radius-full);
-  color: var(--text-muted);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
-  min-height: calc(var(--tap-target) - 2 * var(--space-1) - 2px);
-  padding: 0 var(--space-4);
-}
-
-.segmentOption:hover {
-  color: var(--text);
-}
-
-.segmentOption[aria-pressed='true'] {
-  background: var(--brand);
-  color: var(--on-brand);
 }
 
 .iconButton {
@@ -140,13 +109,41 @@
   width: var(--tap-target);
 }
 
-
-@media (min-width: 640px) {
-  .segmentDesktop {
-    display: inline-flex;
-  }
+.segment {
+  flex-basis: 100%;
+  order: 1;
+}
+.segment > * {
+  display: flex;
+}
+.segment button {
+  flex: 1;
 }
 
+@media (min-width: 640px) {
+  .headerInner {
+    flex-wrap: nowrap;
+    height: var(--header-height);
+    padding-block: 0;
+  }
+
+  .segment {
+    flex-basis: auto;
+    margin-left: auto;
+    order: 0;
+  }
+
+  .headerActions {
+    margin-left: 0;
+  }
+
+  .segment > * {
+    display: inline-flex;
+  }
+  .segment button {
+    flex: none;
+  }
+}
 
 @media (min-width: 1024px) {
   .nav {
