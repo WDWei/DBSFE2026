@@ -21,6 +21,10 @@
   gap: var(--space-6);
   min-width: 0;
 }
+/* Added myself */
+.rail {
+  align-self: flex-end;
+}
 
 .greeting {
   font-size: var(--text-2xl);

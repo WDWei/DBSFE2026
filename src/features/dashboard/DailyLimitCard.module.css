@@ -1,0 +1,37 @@
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-4);
+}
+
+.heading {
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+}
+
+.remaining {
+  font-weight: var(--weight-medium);
+}
+
+.track {
+  background: var(--surface-muted);
+  border-radius: var(--radius-full);
+  height: var(--space-2);
+  overflow: hidden;
+}
+
+.fill {
+  background: var(--brand);
+  border-radius: var(--radius-full);
+  height: 100%;
+  transition: width var(--duration-base) var(--ease-out);
+}
+
+.note {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}

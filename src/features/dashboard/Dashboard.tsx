@@ -12,6 +12,7 @@ import { Skeleton } from "../../components/Skeleton";
 import { formatLongDate } from "../../lib/format";
 import { useRef } from "react";
 import { AccountsSection } from "./AccountsSection";
+import { DailyLimitCard } from "./DailyLimitCard";
 
 export function Dashboard() {
   const customerResult = useQuery(customerQuery);
@@ -86,9 +87,9 @@ export function Dashboard() {
               <AccountsSection accounts={accounts} />
               {/* <TransactionList transactions={transactions} /> */}
             </div>
-            {/* <aside className={styles.rail} aria-label="Transfer limits">
+            <aside className={styles.rail} aria-label="Transfer limits">
               <DailyLimitCard customer={customer} />
-            </aside> */}
+            </aside>
           </div>
         )}
       </main>
