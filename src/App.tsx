@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { apiFetch } from './api/client'
 import type { Health } from './api/types'
+import { Dashboard } from './features/dashboard/Dashboard'
 
 export default function App() {
   const health = useQuery({
@@ -16,24 +17,25 @@ export default function App() {
       : 'connected'
 
   return (
-    <div className="starter">
-      <header className="starter-header">
-        <strong>Meridian</strong>
-        <span>Take-home starter</span>
-      </header>
+    <Dashboard />
+    // <div className="starter">
+    //   <header className="starter-header">
+    //     <strong>Meridian</strong>
+    //     <span>Take-home starter</span>
+    //   </header>
 
-      <main className="starter-main">
-        <h1>Build the dashboard and transfer flow</h1>
-        <p>
-          Start with <code>README.md</code>, then read{' '}
-          <code>brief/candidate-brief.md</code>. Replace this screen with your
-          app.
-        </p>
+    //   <main className="starter-main">
+    //     <h1>Build the dashboard and transfer flow</h1>
+    //     <p>
+    //       Start with <code>README.md</code>, then read{' '}
+    //       <code>brief/candidate-brief.md</code>. Replace this screen with your
+    //       app.
+    //     </p>
 
-        <p className="status" role="status">
-          Mock API: {status}
-        </p>
-      </main>
-    </div>
+    //     <p className="status" role="status">
+    //       Mock API: {status}
+    //     </p>
+    //   </main>
+    // </div>
   )
 }
