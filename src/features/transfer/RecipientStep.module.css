@@ -1,0 +1,72 @@
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.option {
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  gap: var(--space-3);
+  min-height: 56px;
+  padding: var(--space-2) var(--space-3);
+}
+
+.option:hover {
+  background: var(--surface-muted);
+}
+
+.option:has(input:checked) {
+  background: var(--brand-soft);
+  border-color: var(--brand);
+}
+
+.option input {
+  accent-color: var(--brand);
+  flex-shrink: 0;
+  height: 20px;
+  margin: 0;
+  width: 20px;
+}
+
+.initials {
+  align-items: center;
+  background: var(--surface-muted);
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  flex-shrink: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  height: 40px;
+  justify-content: center;
+  width: 40px;
+}
+
+.payee {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.payeeName {
+  font-weight: var(--weight-medium);
+}
+
+.payeeMeta {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.error {
+  color: var(--negative);
+  font-size: var(--text-sm);
+}
+
+.newRecipient {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}

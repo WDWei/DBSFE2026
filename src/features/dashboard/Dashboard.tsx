@@ -15,6 +15,7 @@ import { AccountsSection } from "./AccountsSection";
 import { DailyLimitCard } from "./DailyLimitCard";
 import { TransactionList } from "./TransactionList";
 import { BalanceHero } from "./BalanceHero";
+import { TransferDialog } from "../transfer/TransferDialog";
 
 export function Dashboard() {
   const customerResult = useQuery(customerQuery);
@@ -96,13 +97,14 @@ export function Dashboard() {
         )}
       </main>
       {/* Mounted only while open, so each transfer starts from a clean slate. */}
-      {/* {isTransferOpen && customer && accounts && (
+      {isTransferOpen && customer && accounts && (
         <TransferDialog
           customer={customer}
           accounts={accounts}
           onClose={() => setIsTransferOpen(false)}
+          returnFocusRef={newTransferRef}
         />
-      )} */}
+      )}
     </>
   );
 }

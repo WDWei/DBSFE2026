@@ -1,0 +1,42 @@
+.amountInput {
+  position: relative;
+}
+
+.currency {
+  color: var(--text-muted);
+  font-weight: var(--weight-medium);
+  inset-block: 0;
+  inset-inline-start: var(--space-3);
+  line-height: var(--tap-target);
+  pointer-events: none;
+  position: absolute;
+}
+
+.amountField {
+  font-size: var(--text-lg);
+  padding-inline-start: var(--space-12);
+}
+
+.quickAmounts {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-block-start: var(--space-2);
+}
+
+.limits {
+  display: flex;
+  flex-direction: column;
+}
+
+.limit {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: space-between;
+}
+
+.counter {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}

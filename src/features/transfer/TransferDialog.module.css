@@ -1,0 +1,71 @@
+/* Below 1024px: a full-screen sheet. */
+.dialog {
+  background: var(--surface);
+  border: 0;
+  color: var(--text);
+  height: 100dvh;
+  inset: 0;
+  margin: 0;
+  max-height: 100dvh;
+  max-width: 100%;
+  padding: 0;
+  width: 100%;
+}
+
+.dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.dialog::backdrop {
+  background: var(--overlay);
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4) 0 var(--gutter-mobile);
+}
+
+.title {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+}
+
+.close {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  cursor: pointer;
+  display: inline-flex;
+  height: var(--tap-target);
+  justify-content: center;
+  width: var(--tap-target);
+}
+
+.close:hover {
+  background: var(--surface-muted);
+}
+
+.close:disabled {
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+@media (min-width: 1024px) {
+  .dialog {
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    height: fit-content;
+    margin: auto;
+    max-height: min(90dvh, 760px);
+    width: 520px;
+  }
+
+  .header {
+    padding-inline-start: var(--space-6);
+  }
+}
