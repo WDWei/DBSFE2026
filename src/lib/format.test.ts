@@ -19,6 +19,8 @@ describe("formatShortDate", () => {
 describe("formatLongDate", () => {
   it("formats in Singapore time regardless of the runner timezone", () => {
     // 00:15 UTC on 18 Oct — would read 17 Oct in the Americas.
-    expect(formatLongDate("2026-10-18T08:15:00+08:00")).toBe("Sunday, 18 Oct");
+    expect(formatLongDate("2026-10-18T08:15:00+08:00")).toBe(
+      "Sunday, 18 October",
+    );
   });
 });

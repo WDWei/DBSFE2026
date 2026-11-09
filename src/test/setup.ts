@@ -1,11 +1,23 @@
-import '@testing-library/jest-dom/vitest'
-import { setupServer } from 'msw/node'
-import { afterAll, afterEach, beforeAll, beforeEach } from 'vitest'
-import { handlers, resetMockDb } from '../mocks/handlers'
+import "@testing-library/jest-dom/vitest";
+import { setupServer } from "msw/node";
+import { afterAll, afterEach, beforeAll, beforeEach } from "vitest";
+import { cleanup } from "@testing-library/react";
+import { handlers, resetMockDb } from "../mocks/handlers";
 
-export const server = setupServer(...handlers)
+HTMLDialogElement.prototype.showModal = function () {
+  this.setAttribute("open", "");
+};
+HTMLDialogElement.prototype.close = function () {
+  this.removeAttribute("open");
+  this.dispatchEvent(new Event("close"));
+};
 
-beforeAll(() => server.listen({ onUnhandledRequest: 'error' }))
-beforeEach(() => resetMockDb())
-afterEach(() => server.resetHandlers())
-afterAll(() => server.close())
+export const server = setupServer(...handlers);
+
+beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
+beforeEach(() => {
+  resetMockDb();
+  cleanup();
+});
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
