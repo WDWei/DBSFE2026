@@ -26,23 +26,23 @@ export function Dashboard() {
   const customer = customerResult.data;
   const accounts = accountsResult.data;
   const transactions = transactionsResult.data;
-  const newTransferRef = useRef<HTMLButtonElement>(null);
   const isLoading = results.some((result) => result.isPending);
   const isError = results.some((result) => result.isError);
   const isRetrying = results.some(
     (result) => result.isError && result.isFetching,
   );
   const isLoaded = results.every((result) => result.data !== undefined);
-  const canTransfer = accounts !== undefined && !isError;
-
-  const [isTransferOpen, setIsTransferOpen] = useState(false);
-  const { segment, setSegment } = useSegment(customer?.segment);
-
   const retry = () => {
     for (const result of results) {
       if (result.isError) void result.refetch();
     }
   };
+
+  const newTransferRef = useRef<HTMLButtonElement>(null);
+  const canTransfer = accounts !== undefined && !isError;
+
+  const [isTransferOpen, setIsTransferOpen] = useState(false);
+  const { segment, setSegment } = useSegment(customer?.segment);
 
   return (
     <>

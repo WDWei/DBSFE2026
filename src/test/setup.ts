@@ -17,7 +17,9 @@ export const server = setupServer(...handlers);
 beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
 beforeEach(() => {
   resetMockDb();
+});
+afterEach(() => {
+  server.resetHandlers();
   cleanup();
 });
-afterEach(() => server.resetHandlers());
 afterAll(() => server.close());

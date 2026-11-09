@@ -1,135 +1,142 @@
-# Meridian Banking — Frontend Take-Home
+# Meridian Banking — Wee Ding Wei
 
-Build a small banking app for one customer: a **dashboard** that shows her
-accounts and recent transactions, and a **three-step transfer** that sends money
-to a payee.
-
-You get a working React + TypeScript starter with a mock API already wired in,
-plus design tokens and a wireframe. You don't need a backend, and you don't need
-to invent data.
-
-|  |  |
-| --- | --- |
-| **Time** | Submit within **2 weeks** of receiving this. Most people need about **8–12 hours**; you don't need to use the full two weeks. |
-| **AI tools** | Allowed. In the follow-up call you explain your code and change it live, **without AI help**. See [How we assess](#4-how-we-assess). |
-| **Stack** | React 19, TypeScript, Vite, TanStack Query, React Hook Form, Zod, MSW, Vitest (all installed). Node 22. |
-
----
-
-## 1. Get started
-
-1. Open **https://github.com/Harmonice-Mundi/2026-fe-assignment/generate**
-   (or press **Use this template** → **Create a new repository**). Choose your
-   own account as the owner, keep it **Public**, and click **Create
-   repository**.
-2. Clone your copy and run:
-
-   ```bash
-   npm install
-   npm run dev        # http://localhost:5173
-   ```
-
-   You should see **"Mock API: connected"**. That screen is a placeholder;
-   replace it with your app.
-
-3. Read the docs below in order before writing code.
-
-## 2. What to read
-
-| Read | What it gives you |
-| --- | --- |
-| 1. [`brief/candidate-brief.md`](brief/candidate-brief.md) | **The spec.** What to build, what's required vs optional, exact copy. |
-| 2. [`wireframes/wireframe.md`](wireframes/wireframe.md) | Layout of each screen (low fidelity — no visual design). |
-| 3. [`brief/api-contract.md`](brief/api-contract.md) | Endpoints, types, errors, and test hooks. |
-
-Look these up when you need them:
-
-- [`DEPLOYMENT.md`](DEPLOYMENT.md): hosting settings and fixes for common mock-API
-  problems.
-- [`brief/design-tokens.css`](brief/design-tokens.css): colours, spacing and type
-  (already imported).
-- [`mock-api/README.md`](mock-api/README.md): the optional Node mock server.
-
-## 3. What's already in the starter
-
-| Path | What it is |
-| --- | --- |
-| `src/api/client.ts`, `src/api/types.ts` | Typed `apiFetch` helper and the API types. Build your queries on these. |
-| `src/lib/format.ts` | `formatMoney` and `formatShortDate`. Use them so amounts and dates match the brief. |
-| `src/mocks/`, `mock-api/` | The mock API. It runs in the browser, in tests, and in your deployed site. **Don't edit it.** |
-| `src/test/setup.ts` | Test setup. The mock data resets before every test. |
-| `src/App.tsx` | Placeholder screen. Replace it. |
-
-How you structure folders, components and features is **up to you** — that's
-part of what we look at.
-
-```bash
-npm run dev        # start the app
-npm test           # run tests once (npm run test:watch to keep watching)
-npm run lint       # ESLint
-npm run typecheck  # TypeScript
-npm run check      # lint + typecheck + tests
-npm run build      # production build into dist/
-```
-
-Run `npm run check` and `npm run build` before you submit; both should pass.
-
-## 4. How we assess
-
-1. **We open your deployed app** and run through the flows in the brief.
-2. **We read your code and README.** We look at how you structured the
-   project, the decisions you made, and whether the tests check real behaviour.
-3. **We have a follow-up call with you (about 45 minutes).** You share your
-   screen and:
-   - walk us through the structure and two or three decisions you made;
-   - trace one flow through the code (for example, what happens from
-     `Confirm transfer` until the balance updates);
-   - make **one or two small changes live**, without AI assistance. They are
-     the size of "add a validation rule" or "show one more field". Your
-     normal editor, docs and search are fine.
-
-**On AI:** use whatever tools you like while building. We are not checking
-whether code was AI-generated. We are checking that **you understand all of
-it** and made deliberate choices. If you can't explain a piece of code, it
-counts against you, whoever wrote it. Your README must say what you used AI
-for (see below).
-
-A smaller app you understand well scores better than a bigger one you can't
-explain.
-
-## 5. Submit
-
-1. **Deploy** to Netlify, Vercel or Cloudflare Pages (settings in
-   [`DEPLOYMENT.md`](DEPLOYMENT.md)). The deployed site must work with no local
-   server.
-2. **Replace this README** with your own, using the outline below.
-3. **Reply to the invitation email** with your repo URL and your deployed URL.
-
-### Your README
-
-```md
-# Meridian Banking — <Your Name>
-
-- Deployed: <url>
+- Deployed: <https://meridian-banking-dw.vercel.app/>
 - Run locally: `npm install && npm run dev`
+- Checks: `npm run check` (lint, type-check, tests)
 
 ## Project structure
-Folders and what each is responsible for.
+
+```
+src/
+  api/            HTTP client, query definitions and API types
+    client.ts       apiFetch: fetch wrapper that turns error responses into typed errors
+    queries.ts      queryOptions for customer, accounts, payees, transactions; useCreateTransfer
+    types.ts        Response and request types from brief/api-contract.md
+  components/     Shared, feature-agnostic UI: Button, Field, Skeleton, EmptyState, ErrorPanel, Icons
+  features/
+    dashboard/      Dashboard page: Header, BalanceHero, AccountsSection, TransactionList, DailyLimitCard
+    preferences/    Theme toggle, Retail/Premium switch, and the hooks that persist them
+    transfer/       Transfer dialog: steps (Recipient → Amount → Review → Success), zod schemas, draft helpers
+  lib/            Pure helpers: money/date formatting, account totals
+  mocks/          Re-exports the shared MSW handlers for the browser worker
+  test/           Vitest setup (MSW server, jsdom stubs, cleanup) and the renderApp helper
+mock-api/         MSW handlers + seed data, shared by the browser, the Node server and the tests
+```
+
+Each feature folder owns its components and CSS modules. Anything used by more than one feature goes in `components/` or `lib/`.
 
 ## Decisions and trade-offs
-Server state vs UI state, forms and validation, theming, anything you
-chose deliberately, and what you'd change.
+
+### Server state vs UI state
+
+- **Server state lives in React Query only.** Customer, accounts, transactions and payees are `queryOptions` objects in `api/queries.ts`, each with a `select` that unwraps the response envelope. Components never copy query data into `useState`.
+- **After a transfer**, `useCreateTransfer` invalidates customer, accounts and transactions. It returns that promise, so the mutation stays pending until the refetches finish, and the dashboard behind the success screen is already up to date.
+- **UI state stays local.** Examples: whether the dialog is open, the current step, the search text.
+- **Retail/Premium:** `useSegment` uses the customer's segment from the API as the default. Only an explicit user choice is stored (in `localStorage`), so the API value is never duplicated into state.
+
+### Dashboard page state
+
+The dashboard reads three queries and works out its page state from them:
+
+```ts
+const isLoading = results.some((result) => result.isPending);
+const isError = results.some((result) => result.isError);
+const isRetrying = results.some(
+  (result) => result.isError && result.isFetching,
+);
+const isLoaded = results.every((result) => result.data !== undefined);
+```
+
+- In React Query v5 a query is exactly one of `pending`, `error` or `success`, so `isPending` already excludes errors.
+- `isRetrying` only counts queries that failed and are refetching. A background refetch of a healthy query doesn't make the Retry button spin.
+- **Considered:** `useQueries` with `combine`. **Kept:** three plain `useQuery` calls. The `combine` version was no shorter and harder to read. It would be worth it if the queries became dynamic or were needed in another component.
+
+### Forms and validation
+
+- **Libraries:** React Hook Form with `zodResolver`, one form per step.
+- **Rules live once, in `features/transfer/schemas.ts`.** They run when a field is left and again on Continue.
+- **Amount schema:** It's a factory (`createAmountSchema`) because the balance and daily limit come from live API data. If the amount format is invalid, the limit check is skipped so the user sees one error, not two.
+- **New-recipient fields** are only validated once "Send to someone new" is chosen.
+- **Server-side field errors** (e.g. `DAILY_LIMIT_EXCEEDED`) are mapped back onto the matching field.
+- **Double sends:** A ref guard plus the mutation's pending state stop a double-click on Confirm from sending twice.
+
+### Dialog and focus
+
+- **Native `<dialog>`:** The dialog opens with `showModal()`, which gives a focus trap, an inert background and Esc handling for free.
+- **Esc:** The dialog handles `cancel` itself, so closing can be blocked while a transfer is sending. Closing mid-send would hide whether the money moved.
+- **Focus return:** The "New transfer" button is passed in as a ref (`returnFocusRef`), and focus goes back to it on close.
+  - It's a ref, not state, because nothing renders differently based on it.
+  - It's not `document.activeElement` either, because macOS Safari doesn't focus buttons on click.
+- **Fresh start:** The dialog is mounted only while open, so every transfer starts clean.
+
+### Theming
+
+- **Tokens:** Colours and spacing come from CSS custom properties based on `brief/design-tokens.css`.
+- **Light/dark and Retail/Premium** are set as `data-theme` and `data-segment` on `<html>`.
+- **Theme on load:** `useTheme` reads the stored choice, or the system preference if none is stored.
+- **Storage failures:** Storage access is wrapped in `try/catch`. If storage is blocked, the choice still applies until reload.
 
 ## Loading, empty and error states
-How you handled them, and how to see each one in the deployed app.
+
+| State            | How it's handled                                                                                                                                                                                                                       | How to see it (deployed)         |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| Loading          | Skeletons sized like the real content, so the layout doesn't jump. `aria-busy` on `<main>` and a visually hidden "Loading your dashboard…" status.                                                                                     | `/?delay=3000`                   |
+| Empty            | `EmptyState` for no accounts, no transactions, no saved payees, and no search matches.                                                                                                                                                 | `/?scenario=empty`               |
+| Error            | `ErrorPanel` with Retry, which refetches only the queries that failed. If a later refresh fails, the panel shows above the old data, so a stale balance is never presented as current. The payee list in the dialog has its own Retry. | `/?scenario=error`               |
+| Transfer failure | Stays on Review with the data kept, shows the server's message, and allows retry. No money moves.                                                                                                                                      | Add `#fail` to the transfer note |
+
+`withDemoParams` forwards `scenario` and `delay` from the page URL to the mock API. This makes the states reachable on the deployed site without a debug button in the UI.
 
 ## Tests
-What they cover and why you picked those cases.
+
+36 tests across 4 files. All passing.
+
+- **`features/transfer/TransferDialog.test.tsx` (12):** The whole flow through the real app and the MSW API.
+  - Focus moves in on open and returns to the opener on close.
+  - Going back from Review keeps what the user entered.
+  - Validation on blur and on Continue, and focus moves to the first invalid field.
+  - Balance and daily-limit errors send no request.
+  - A transfer succeeds and the dashboard updates, for both a saved payee and a new recipient.
+  - A double-click on Confirm sends once.
+  - Server failure and rejection keep the user's data and show the right message.
+- **`features/dashboard/Dashboard.test.tsx` (5):**
+  - The total counts deposit accounts only.
+  - The 8 newest transactions show in order.
+  - Search, and clearing the search.
+  - Error, then Retry, then the dashboard loads.
+  - The empty state.
+- **`features/transfer/schemas.test.ts`:** Each validation rule on its own: balance, daily limit, note length, recipient selection, new-recipient fields.
+- **`lib/format.test.ts`:** Money and date formatting, pinned to Singapore time whatever timezone the test machine uses.
+
+**Why these cases:** They're where a bug costs the user money or trust: wrong totals, bad validation, sending twice, or losing input after an error. The tests use the real app and mock API rather than mocking components, so they check what the user actually sees.
+
+**Test setup (`src/test/setup.ts`):**
+
+- jsdom doesn't implement `<dialog>`'s `showModal()` or `close()`, so they're stubbed to toggle `open` and fire `close`.
+- Vitest doesn't give Testing Library a global `afterEach`, so `cleanup()` is called explicitly. Without it, each test's app stayed in the DOM ("Found multiple elements…").
 
 ## AI use
-Which tools, and what for. Name two or three places where you changed,
-rejected or fixed what the AI produced, and why.
+
+**Tool:** Claude Code (in the terminal).
+
+### Approach: AI first, then human review
+
+I built this assignment AI-first. AI wrote the first draft of each part, and I treated every draft as unreviewed code until I had checked it myself.
+
+1. **Draft with AI.** For each feature (dashboard sections, transfer steps, validation, tests), I gave Claude the relevant part of the brief and the API contract, and had it produce the first version.
+2. **Review as a human.** I read each draft against the brief, the wireframe and the design tokens. I checked what it did, not just that it compiled. Where I wasn't sure why something was written a certain way, I asked Claude to explain it before accepting it.
+3. **Verify.** I ran the app with the demo scenarios (`?delay`, `?scenario=empty`, `?scenario=error`, `#fail`) and ran `npm run check` (lint, type-check, tests).
+4. **Push back or simplify.** Where a draft was more complex than it needed to be, or didn't match what I wanted, I asked for a preview of the change before anything was written, then kept, changed or rejected it.
+
+### Where review changed, rejected or fixed the AI's output
+
+1. **Rejected `useQueries` + `combine`.** Claude proposed merging the three dashboard queries. I asked for a preview first and kept the three `useQuery` calls, because they're easier to read and the change wasn't shorter.
+2. **Fixed the failing dialog tests myself.** All 12 `TransferDialog` tests failed. I asked Claude for the cause only, with no file changes. It found two problems: jsdom has no `<dialog>` `showModal()`, and Testing Library's cleanup wasn't running. I added the stubs and `cleanup()` to the setup file by hand.
+3. **Caught a deprecated type.** `StepFrame.tsx` uses `FormEventHandler`, which current React types mark as deprecated. `SubmitEventHandler` is the right type for a form's `onSubmit`.
 
 ## Not done / known issues
-What you left out or would do with more time.
-```
+
+- **Theme flash on load:** `index.html` hard-codes `data-theme="light"`, and the stored theme is applied only after React mounts, so dark-mode users see a brief light flash. The fix is an inline script in `index.html` that sets `data-theme` before first paint. The comment in `userPreferences.ts` says that script exists, but it doesn't yet.
+- **Greeting:** It's always "Good evening". It should follow the time of day.
+- **Test cleanup placement:** `cleanup()` runs in `beforeEach`, so the last test's DOM stays mounted after each file. `afterEach` is the usual place.
+- **Untested dialog behaviour:** The jsdom `<dialog>` stub has no focus trap and doesn't fire `cancel` on Esc. Those parts are checked by hand in a browser, not by tests.
