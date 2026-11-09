@@ -26,14 +26,13 @@ export function Dashboard() {
   const accounts = accountsResult.data;
   const transactions = transactionsResult.data;
   const newTransferRef = useRef<HTMLButtonElement>(null);
-  const isLoading = results.some(
-    (result) => result.isPending && !result.isError,
-  );
+  const isLoading = results.some((result) => result.isPending);
   const isError = results.some((result) => result.isError);
-  const isRetrying = isError && results.some((result) => result.isFetching);
-  const hasData = results.every((result) => result.data !== undefined);
+  const isRetrying = results.some(
+    (result) => result.isError && result.isFetching,
+  );
+  const isLoaded = results.every((result) => result.data !== undefined);
   const canTransfer = accounts !== undefined && !isError;
-  const isLoaded = Boolean(customer && accounts && transactions);
 
   const [isTransferOpen, setIsTransferOpen] = useState(false);
   const { segment, setSegment } = useSegment(customer?.segment);
@@ -66,7 +65,6 @@ export function Dashboard() {
             isRetrying={isRetrying}
           />
         )}
-        {/*The hasData and isError can be simplified*/}
         {(isLoaded || !isError) && (
           <div className={styles.grid}>
             <div className={styles.column}>
@@ -97,6 +95,14 @@ export function Dashboard() {
           </div>
         )}
       </main>
+      {/* Mounted only while open, so each transfer starts from a clean slate. */}
+      {/* {isTransferOpen && customer && accounts && (
+        <TransferDialog
+          customer={customer}
+          accounts={accounts}
+          onClose={() => setIsTransferOpen(false)}
+        />
+      )} */}
     </>
   );
 }
